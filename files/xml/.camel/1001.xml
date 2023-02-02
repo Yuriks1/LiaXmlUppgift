@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+   <line>
+      <id>77</id>
+      <from>SEK</from>
+      <to>EUR</to>
+      <conversionMultiple>99</conversionMultiple>
+   </line>
+</root>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+   <line>
+      <id>99</id>
+      <from>AUD</from>
+      <to>INR</to>
+      <conversionMultiple>88</conversionMultiple>
+   </line>
+</root>

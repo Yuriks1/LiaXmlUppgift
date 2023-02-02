@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <line>
+        <id>1021</id>
+        <from>SEK</from>
+        <to>GBB</to>
+        <conversionMultiple>70</conversionMultiple>
+    </line>
+</root>

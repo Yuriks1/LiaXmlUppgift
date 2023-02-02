@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <line>
+        <id>1003</id>
+        <from>EUR</from>
+        <to>LIR</to>
+        <conversionMultiple>7</conversionMultiple>
+    </line>
+    <line>
+        <id>1004</id>
+        <from>EUR</from>
+        <to>YEN</to>
+        <conversionMultiple>10</conversionMultiple>
+    </line>
+    <line>
+        <id>1005</id>
+        <from>EUR</from>
+        <to>RIA</to>
+        <conversionMultiple>9</conversionMultiple>
+    </line>
+    <line>
+        <id>1006</id>
+        <from>EUR</from>
+        <to>PEZ</to>
+        <conversionMultiple>5</conversionMultiple>
+    </line>
+</root>
+
