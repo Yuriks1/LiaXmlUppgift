@@ -1,0 +1,16 @@
+<xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="root" type="rootType"/>
+    <xs:complexType name="lineType">
+        <xs:sequence>
+            <xs:element type="xs:long" name="id"/>
+            <xs:element type="xs:string" name="from"/>
+            <xs:element type="xs:string" name="to"/>
+            <xs:element type="xs:int" name="conversionMultiple"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="rootType">
+        <xs:sequence>
+            <xs:element type="lineType" name="line" maxOccurs="unbounded" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
