@@ -12,7 +12,7 @@
             <!-- DB User -->
             <property name="javax.persistence.jdbc.password" value="camel" />
             <!-- DB Password -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <!-- DB Dialect -->
             <property name="hibernate.hbm2ddl.auto" value="update" />
             <!-- create / create-drop / update -->

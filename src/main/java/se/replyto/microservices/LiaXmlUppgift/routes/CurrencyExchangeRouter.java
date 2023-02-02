@@ -8,6 +8,7 @@ import org.apache.camel.converter.jaxb.JaxbDataFormat;
 import org.apache.camel.model.dataformat.BindyType;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.apache.logging.log4j.LogManager;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import se.replyto.microservices.LiaXmlUppgift.beans.CurrencyExchangeDto;
 import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchangeSet;
@@ -18,6 +19,7 @@ import javax.xml.bind.JAXBContext;
 
 @Component
 public class CurrencyExchangeRouter extends RouteBuilder {
+
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger();
 
@@ -64,6 +66,7 @@ public class CurrencyExchangeRouter extends RouteBuilder {
 
 
         from("direct:csv")
+                .split(body())
                 .doTry()
                 .marshal()
                 .bindy(BindyType.Csv, CurrencyExchangeDto.class)
@@ -78,6 +81,7 @@ public class CurrencyExchangeRouter extends RouteBuilder {
 
 
         from("direct:json")
+                .split(body())
                 .doTry()
                 .marshal(jsonDataFormat)
                 .log(LoggingLevel.INFO, "New JSON body : ${body}")
@@ -107,7 +111,8 @@ public class CurrencyExchangeRouter extends RouteBuilder {
         restConfiguration().component("jetty").host("0.0.0.0").port(8080).bindingMode(RestBindingMode.json).enableCORS(true);
 
         rest("replyto")
-                .produces("application/json")
+                .consumes(MediaType.APPLICATION_JSON_VALUE)
+                .produces(MediaType.APPLICATION_JSON_VALUE)
                 .post("currency_exchange")
                 .type(CurrencyExchangeDto.class)
                 .route().routeId("RestRouteId")
