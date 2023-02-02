@@ -11,8 +11,10 @@ import java.util.List;
 public class ConvertToDtoProcessor implements org.apache.camel.Processor {
     @Override
     public void process(Exchange exchange) throws Exception {
+
         InboundCurrencyExchangeSet inboundCurrencyExchangeSet = exchange.getIn().getBody(InboundCurrencyExchangeSet.class);
         List<CurrencyExchangeDto> currencyExchangeDtoList = new ArrayList<>();
+
         if(inboundCurrencyExchangeSet != null){
             for (InboundCurrencyExchange curExchange: inboundCurrencyExchangeSet.getInboundCurrencyExchangeList()){
                 CurrencyExchangeDto currencyExchangeDto = new CurrencyExchangeDto(curExchange.getId(),curExchange.getFrom()

@@ -108,7 +108,7 @@ public class CurrencyExchangeRouter extends RouteBuilder {
 
         rest("replyto")
                 .produces("application/json")
-                .post("currency")
+                .post("currency_exchange")
                 .type(CurrencyExchangeDto.class)
                 .route().routeId("RestRouteId")
                 .log(LoggingLevel.INFO, "New body Rest : ${body}")
