@@ -6,7 +6,6 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
 import org.apache.camel.model.dataformat.BindyType;
-import org.apache.camel.model.dataformat.CsvDataFormat;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Component;
@@ -14,8 +13,8 @@ import se.replyto.microservices.LiaXmlUppgift.beans.CurrencyExchangeDto;
 import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchangeSet;
 import se.replyto.microservices.LiaXmlUppgift.beans.OutboundCurrencyExchange;
 import se.replyto.microservices.LiaXmlUppgift.processor.ConvertToDtoProcessor;
+
 import javax.xml.bind.JAXBContext;
-import java.util.Arrays;
 
 @Component
 public class CurrencyExchangeRouter extends RouteBuilder {
@@ -46,15 +45,16 @@ public class CurrencyExchangeRouter extends RouteBuilder {
         jsonDataFormat.useList();
 
 
-
-
         from("file:files/xml")
                 .routeId("currencyExchangeRouteId")
                 .log(LoggingLevel.INFO, "Original body : ${body}")
+
                 .unmarshal(xmlDataFormat)
-                .log(LoggingLevel.INFO, "Unmarshal body : ${body}")
+                .log(LoggingLevel.INFO, "Unmarshalled body : ${body}")
+
                 .process(new ConvertToDtoProcessor())
-                .log(LoggingLevel.INFO, "Converted Pojo from XML : ${body}")
+                .log(LoggingLevel.INFO, "After converted to POJO : ${body}")
+
                 .multicast()
                 .to("direct:csv")
                 .to("direct:json")
@@ -65,16 +65,12 @@ public class CurrencyExchangeRouter extends RouteBuilder {
 
         from("direct:csv")
                 .doTry()
-
                 .marshal()
                 .bindy(BindyType.Csv, CurrencyExchangeDto.class)
-                .log(LoggingLevel.INFO, "New body CSV : ${body}")
-
-
+                .log(LoggingLevel.INFO, "New CSV body : ${body}")
                 .to("file:files/output?fileName=1000.csv")
                 .doCatch(Exception.class)
                 .process(exchange -> {
-
                     Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
                     System.out.println(cause);
                 })
@@ -84,8 +80,7 @@ public class CurrencyExchangeRouter extends RouteBuilder {
         from("direct:json")
                 .doTry()
                 .marshal(jsonDataFormat)
-                .log(LoggingLevel.INFO, "New body Json : ${body}")
-
+                .log(LoggingLevel.INFO, "New JSON body : ${body}")
                 .to("activemq:jsonOut")
                 .doCatch(Exception.class)
                 .process(exchange -> {
@@ -94,13 +89,13 @@ public class CurrencyExchangeRouter extends RouteBuilder {
                 })
                 .end();
 
+
         from("direct:database")
+                .log(LoggingLevel.INFO, "Before split(body)) : ${body}")
                 .split(body())
+                .log(LoggingLevel.INFO, "After split(body)) : ${body}")
                 .doTry()
-                .log(LoggingLevel.INFO, "After DATABASE processor : ${body}")
-
                 .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto")
-
                 .doCatch(Exception.class)
                 .process(exchange -> {
                     Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
@@ -117,8 +112,6 @@ public class CurrencyExchangeRouter extends RouteBuilder {
                 .type(CurrencyExchangeDto.class)
                 .route().routeId("RestRouteId")
                 .log(LoggingLevel.INFO, "New body Rest : ${body}")
-                //.to("file:src/data/output?fileName=outputFile.csv&fileExist=append&appendChars=\\n");
-                //.to("jpa:" + InboundCurrencyExchange.class.getName());
                 .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto")
                 .endRest();
     }
