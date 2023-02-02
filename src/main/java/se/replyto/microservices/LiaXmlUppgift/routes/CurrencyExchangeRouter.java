@@ -114,9 +114,16 @@ public class CurrencyExchangeRouter extends RouteBuilder {
                 .log(LoggingLevel.INFO, "New body Rest : ${body}")
                 .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto")
                 .endRest();
-    }
 
+
+    }
 }
+
+
+
+
+
+
 
 
 
