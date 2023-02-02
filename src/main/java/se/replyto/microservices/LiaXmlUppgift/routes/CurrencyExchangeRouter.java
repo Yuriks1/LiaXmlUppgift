@@ -6,14 +6,16 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.apache.camel.converter.jaxb.JaxbDataFormat;
 import org.apache.camel.model.dataformat.BindyType;
+import org.apache.camel.model.dataformat.CsvDataFormat;
 import org.apache.camel.model.rest.RestBindingMode;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.stereotype.Component;
 import se.replyto.microservices.LiaXmlUppgift.beans.CurrencyExchangeDto;
 import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchangeSet;
+import se.replyto.microservices.LiaXmlUppgift.beans.OutboundCurrencyExchange;
 import se.replyto.microservices.LiaXmlUppgift.processor.ConvertToDtoProcessor;
-
 import javax.xml.bind.JAXBContext;
+import java.util.Arrays;
 
 @Component
 public class CurrencyExchangeRouter extends RouteBuilder {
@@ -39,9 +41,11 @@ public class CurrencyExchangeRouter extends RouteBuilder {
                 .withUri("validator:InboundCurrencyExchange.xsd");
 
 
-        JacksonDataFormat jsonDataFormat = new JacksonDataFormat(CurrencyExchangeDto.class);
+        JacksonDataFormat jsonDataFormat = new JacksonDataFormat(OutboundCurrencyExchange.class);
         jsonDataFormat.setPrettyPrint(true);
         jsonDataFormat.useList();
+
+
 
 
         from("file:files/xml")
@@ -61,6 +65,7 @@ public class CurrencyExchangeRouter extends RouteBuilder {
 
         from("direct:csv")
                 .doTry()
+
                 .marshal()
                 .bindy(BindyType.Csv, CurrencyExchangeDto.class)
                 .log(LoggingLevel.INFO, "New body CSV : ${body}")
@@ -81,7 +86,7 @@ public class CurrencyExchangeRouter extends RouteBuilder {
                 .marshal(jsonDataFormat)
                 .log(LoggingLevel.INFO, "New body Json : ${body}")
 
-//                .to("activemq:jsonOut")
+                .to("activemq:jsonOut")
                 .doCatch(Exception.class)
                 .process(exchange -> {
                     Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
@@ -93,10 +98,7 @@ public class CurrencyExchangeRouter extends RouteBuilder {
                 .split(body())
                 .doTry()
                 .log(LoggingLevel.INFO, "After DATABASE processor : ${body}")
-//                .convertBodyTo(String.class)
 
-                //.to("file:files/output?fileName=1000.txt")
-                //.to("jpa:" + InboundCurrencyTable.class.getName())
                 .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto")
 
                 .doCatch(Exception.class)

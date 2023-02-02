@@ -13,7 +13,7 @@ import javax.persistence.Table;
 @Entity
 @CsvRecord(separator = ",", crlf = "UNIX", generateHeaderColumns = true)
 @JsonIgnoreProperties(value = {"currency_exchange"})
-@Table(name  = "CURRENCY_EXCHANGE")
+@Table(name = "CURRENCY_EXCHANGE")
 public class CurrencyExchangeDto {
     @Id
     @Column(name = "ID")
@@ -72,7 +72,9 @@ public class CurrencyExchangeDto {
         this.conversionMultiple = conversionMultiple;
     }
 
-    public CurrencyExchangeDto(){}
+    public CurrencyExchangeDto() {
+    }
+
     public CurrencyExchangeDto(int id, String from, String to, Integer conversionMultiple) {
         this.id = id;
         this.from = from;
