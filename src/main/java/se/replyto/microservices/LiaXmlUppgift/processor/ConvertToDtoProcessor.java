@@ -1,9 +1,9 @@
 package se.replyto.microservices.LiaXmlUppgift.processor;
 
 import org.apache.camel.Exchange;
-import se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto;
-import se.replyto.microservices.xmluppgift.beans.InboundCurrencyExchange;
-import se.replyto.microservices.xmluppgift.beans.InboundCurrencyExchangeSet;
+import se.replyto.microservices.LiaXmlUppgift.beans.CurrencyExchangeDto;
+import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchange;
+import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchangeSet;
 
 import java.util.ArrayList;
 import java.util.List;
