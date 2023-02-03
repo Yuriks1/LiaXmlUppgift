@@ -67,7 +67,6 @@ public class CurrencyExchangeRouter extends RouteBuilder {
 
 
         from("direct:csv")
-                .split(body())
                 .doTry()
                 .marshal()
                 .bindy(BindyType.Csv, CurrencyExchangeDto.class)
