@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import se.replyto.microservices.LiaXmlUppgift.beans.CurrencyExchangeDto;
+import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchange;
 import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchangeSet;
 import se.replyto.microservices.LiaXmlUppgift.beans.OutboundCurrencyExchange;
 import se.replyto.microservices.LiaXmlUppgift.processor.ConvertToDtoProcessor;
@@ -119,6 +120,7 @@ public class CurrencyExchangeRouter extends RouteBuilder {
                 .log(LoggingLevel.INFO, "New body Rest : ${body}")
                 .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto")
                 .endRest();
+
 
 
     }
