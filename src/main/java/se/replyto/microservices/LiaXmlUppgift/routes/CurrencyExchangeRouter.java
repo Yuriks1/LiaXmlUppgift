@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import se.replyto.microservices.LiaXmlUppgift.beans.CurrencyExchangeDto;
-import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchange;
 import se.replyto.microservices.LiaXmlUppgift.beans.InboundCurrencyExchangeSet;
 import se.replyto.microservices.LiaXmlUppgift.beans.OutboundCurrencyExchange;
 import se.replyto.microservices.LiaXmlUppgift.processor.ConvertToDtoProcessor;
@@ -120,6 +119,12 @@ public class CurrencyExchangeRouter extends RouteBuilder {
                 .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto")
                 .endRest();
 
+
+        rest().get("currency_exchange")
+                .produces(MediaType.APPLICATION_JSON_VALUE).route()
+                .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto?" +
+                        "query=select ID,from,to,conversionMultiple from CurrencyExchangeDto") // select all
+                .log("--- select all currency ---");
 
 
     }
