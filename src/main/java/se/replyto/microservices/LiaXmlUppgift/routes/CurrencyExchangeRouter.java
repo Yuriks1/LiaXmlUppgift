@@ -111,20 +111,21 @@ public class CurrencyExchangeRouter extends RouteBuilder {
 
         rest("replyto")
                 .consumes(MediaType.APPLICATION_JSON_VALUE)
-                .produces(MediaType.APPLICATION_JSON_VALUE)
                 .post("currency_exchange")
                 .type(CurrencyExchangeDto.class)
-                .route().routeId("RestRouteId")
+                .route().routeId("RestPostRouteId")
                 .log(LoggingLevel.INFO, "New body Rest : ${body}")
                 .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto")
                 .endRest();
 
 
-        rest().get("currency_exchange")
-                .produces(MediaType.APPLICATION_JSON_VALUE).route()
+        rest().get("replyto/currency_exchange")
+                .produces(MediaType.APPLICATION_JSON_VALUE)
+                .route().routeId("RestGetRouteId")
+                .log(LoggingLevel.INFO, "Get all records")
                 .to("jpa:se.replyto.microservices.xmluppgift.beans.CurrencyExchangeDto?" +
                         "query=select ID,from,to,conversionMultiple from CurrencyExchangeDto") // select all
-                .log("--- select all currency ---");
+                .log("All records : ${body}");
 
 
     }
